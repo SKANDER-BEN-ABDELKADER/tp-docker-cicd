@@ -1,14 +1,11 @@
-name: CI - Test de Base
-
 on:
   push:
-    branches: [main]
+    branches: ["main", "develop"]
+    paths:
+      - "backend/**"
+      - "frontend/**"
   pull_request:
-    branches: [main]
-
-jobs:
-  hello_skander:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Afficher un message
-        run: echo "CI fonctionne !"
+    branches: ["main"]
+  schedule:
+    - cron: "0 2 * * *" # Tous les jours à 2 h du matin
+  workflow_dispatch: # Lancement manuel depuis l'interface GitHub
