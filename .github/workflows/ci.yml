@@ -27,7 +27,7 @@ jobs:
       run: |
         docker build -t tp-backend ./backend
         docker build -t tp-frontend ./frontend
-        docker build -t tp-database ./database
+        docker build -t tp-db ./database
 
     - name: Start services
       run: |
@@ -46,19 +46,18 @@ jobs:
         done
         if [ $i -eq 30 ]; then
           echo "Timeout: backend non démarré"
-          docker-compose logs
           exit 1
         fi
 
     - name: Test API Endpoint
       run: |
         echo "Test de /api"
-        curl -f http://localhost:3000/api || echo "API endpoint non disponible"
+        curl -f http://localhost:3000/api
 
     - name: Test DB Endpoint
       run: |
         echo "Test de /db"
-        curl -f http://localhost:3000/db || echo "DB endpoint non disponible - ignoré"
+        curl -f http://localhost:3000/db
 
     - name: Show logs on failure
       if: failure()
