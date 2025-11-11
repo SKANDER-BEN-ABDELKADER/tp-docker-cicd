@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  hello:
+  hello_skander:
     runs-on: ubuntu-latest
     steps:
       - name: Afficher un message
