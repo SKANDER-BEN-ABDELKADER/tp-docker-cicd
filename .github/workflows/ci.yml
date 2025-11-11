@@ -27,7 +27,7 @@ jobs:
       run: |
         docker build -t tp-backend ./backend
         docker build -t tp-frontend ./frontend
-        docker build -t tp-db ./database
+        docker build -t tp-database ./database
 
     - name: Start services
       run: |
@@ -56,8 +56,8 @@ jobs:
 
     - name: Test DB Endpoint
       run: |
-        echo "Test de /db"
-        curl -f http://localhost:3000/db
+        echo "Test de /database"
+        curl -f http://localhost:3000/database
 
     - name: Show logs on failure
       if: failure()
