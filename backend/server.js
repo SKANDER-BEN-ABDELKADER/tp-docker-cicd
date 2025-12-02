@@ -37,6 +37,7 @@ app.use(cors({
     'http://localhost:*',
     'http://frontend',
     /\.onrender\.com$/,  // Allow Render domains
+    /\.vercel\.app$/,    // Allow Vercel domains
     process.env.FRONTEND_URL  // Allow configured frontend URL
   ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

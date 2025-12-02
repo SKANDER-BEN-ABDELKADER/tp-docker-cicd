@@ -28,7 +28,10 @@
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:3000/api';
+    // Use Render backend URL in production, localhost for development
+    const API_BASE = window.location.hostname === 'localhost' 
+      ? 'http://localhost:3000/api'
+      : 'https://tp-backend.onrender.com/api';
 
     async function fetchData() {
       const resultDiv = document.getElementById('result');
