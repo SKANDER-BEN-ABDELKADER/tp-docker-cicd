@@ -1,0 +1,26 @@
+services:
+  # Backend API
+  - type: web
+    name: tp-backend
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tp-postgres-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /api/health
+
+databases:
+  - name: tp-postgres-db
+    databaseName: mydb
+    user: postgres
+    plan: free
+    region: frankfurt

@@ -8,13 +8,23 @@ const PORT = process.env.PORT || 3000;
 
 // PostgreSQL connection with retry logic
 const createPool = () => {
-  return new Pool({
-    user: process.env.DB_USER || "postgres",
-    host: process.env.DB_HOST || "db",
-    database: process.env.DB_NAME || "mydb",
-    password: process.env.DB_PASSWORD || "password",
-    port: process.env.DB_PORT || 5432,
-  });
+  // Support both DATABASE_URL (Render) and individual env vars (Docker)
+  if (process.env.DATABASE_URL) {
+    return new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    });
+  } else {
+    return new Pool({
+      user: process.env.DB_USER || "postgres",
+      host: process.env.DB_HOST || "db",
+      database: process.env.DB_NAME || "mydb",
+      password: process.env.DB_PASSWORD || "password",
+      port: process.env.DB_PORT || 5432,
+    });
+  }
 };
 
 let pool = createPool();
@@ -25,10 +35,13 @@ app.use(cors({
     'http://localhost:8080',
     'http://127.0.0.1:8080',
     'http://localhost:*',
-    'http://frontend'
-  ],
+    'http://frontend',
+    /\.onrender\.com$/,  // Allow Render domains
+    process.env.FRONTEND_URL  // Allow configured frontend URL
+  ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
+  allowedHeaders: ['Content-Type'],
+  credentials: true
 }));
 app.use(express.json());
 
