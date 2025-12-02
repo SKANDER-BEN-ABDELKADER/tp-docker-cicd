@@ -20,6 +20,5 @@ services:
 databases:
   - name: tp-postgres-db
     databaseName: mydb
-    user: postgres
     plan: free
     region: frankfurt
