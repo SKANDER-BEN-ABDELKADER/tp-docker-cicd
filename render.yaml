@@ -16,7 +16,6 @@ services:
           property: connectionString
       - key: NODE_ENV
         value: production
-    healthCheckPath: /api/health
 
 databases:
   - name: tp-postgres-db
