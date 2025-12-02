@@ -31,14 +31,19 @@
     // Use Render backend URL in production, localhost for development
     const API_BASE = window.location.hostname === 'localhost' 
       ? 'http://localhost:3000/api'
-      : 'https://tp-backend.onrender.com/api';
+      : 'https://tp-backend-ma4b.onrender.com/api';
+
+    console.log('Environment:', window.location.hostname);
+    console.log('API Base URL:', API_BASE);
 
     async function fetchData() {
       const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = '<div class="loading">Loading...</div>';
+      resultDiv.innerHTML = '<div class="loading">Loading...<br>⏳ If this is the first request, it may take 30-60 seconds for the backend to wake up.</div>';
 
       try {
+        console.log('Fetching:', `${API_BASE}`);
         const response = await fetch(`${API_BASE}`);
+        console.log('Response status:', response.status);
         const data = await response.json();
         
         resultDiv.innerHTML = `
@@ -48,10 +53,19 @@
           </div>
         `;
       } catch (error) {
+        console.error('Fetch error:', error);
         resultDiv.innerHTML = `
           <div class="error">
             <p>❌ Error: ${error.message}</p>
-            <p>Check if backend is running on port 3000</p>
+            <p><strong>Backend URL:</strong> ${API_BASE}</p>
+            <p><strong>Possible issues:</strong></p>
+            <ul style="text-align: left;">
+              <li>Backend is sleeping (Render free tier) - Wait 30-60 seconds and try again</li>
+              <li>Backend not deployed yet on Render</li>
+              <li>Wrong backend URL - Check Render dashboard for actual URL</li>
+              <li>CORS issue - Check browser console for details</li>
+            </ul>
+            <button onclick="location.reload()">🔄 Retry</button>
           </div>
         `;
       }
